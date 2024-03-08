@@ -15,13 +15,47 @@ export interface AuthRequest {
     apiKey: string
 }
 
+export interface UserOp {
+    call_data: string
+    call_gas_limit: string
+    init_code: string
+    max_fee_per_gas: string
+    max_priority_fee_per_gas: string
+    nonce: string
+    per_verification_gas: string
+    sender: string
+    signature: string
+    verification_gas_list: string
+}
+
+export interface TryPayUserOpRequest {
+    user_operation: UserOp
+    extra?: string
+    force_entrypoint_address?: string
+    force_network?: Network
+    force_strategy_id?: string
+    force_token?: Token
+}
+
+
 export interface BaseResponse {
     code: number
     message: string
     cost: string
 }
-export interface TryPayUserOpResponse{
 
+export interface TryPayUserOpResponse extends BaseResponse {
+    data: TryPayUserOpResult
+}
+
+export interface TryPayUserOpResult {
+    strategy_id: string
+    entrypoint_address: string
+    paymaster_address: string
+    paymaster_signature: string
+    paymaster_and_data: string
+    pay_receipt: Map<string, string>
+    gas_info: Map<string, string>
 }
 
 export interface HealthResponse extends BaseResponse {
@@ -32,4 +66,15 @@ export interface AuthResponse {
     "code": number,
     "expire": string,
     "token": string
+}
+
+export enum Network {
+    Ethereum = 'ethereum',
+}
+
+export enum Token {
+    USDT = 'usdt',
+    ETH = 'eth',
+    Op = 'op',
+
 }

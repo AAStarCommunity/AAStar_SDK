@@ -1,4 +1,13 @@
-import {AuthResponse, BaseRequest, BaseResponse, ENV, HealthResponse, Method} from "./common/type";
+import {
+    AuthResponse,
+    BaseRequest,
+    BaseResponse,
+    ENV,
+    HealthResponse,
+    Method,
+    TryPayUserOpRequest,
+    TryPayUserOpResponse
+} from "./common/type";
 import {generateUrl} from "./common/PaymasterUtil";
 import {Path} from "./common/path";
 import {PaymasterError} from "./common/error";
@@ -41,13 +50,8 @@ export class EthPaymasterClient {
         return this.request(Path.Auth, Method.POST, {apiKey: apikey})
     }
 
-    tryPayUserOperationV1WithToken(accessToken: string): Promise<BaseResponse> {
-
-        return this.request(Path.TryPayUserOperationV1, Method.POST)
-    }
-
-    tryPayUserOperationV1(apiKey: string): Promise<BaseResponse> {
-        return this.request(Path.TryPayUserOperationV1, Method.POST)
+    tryPayUserOperationV1(accessToken: string, request: TryPayUserOpRequest): Promise<TryPayUserOpResponse> {
+        return this.request(Path.TryPayUserOperationV1, Method.POST, request, accessToken)
     }
 
 
@@ -60,7 +64,7 @@ export class EthPaymasterClient {
     }
 
 
-    protected async request<Request extends BaseRequest, Response>(path: Path, method: Method, body?: Request, urlParams?: Map<string, string>, accessToken?: string) {
+    protected async request<Request extends BaseRequest, Response>(path: Path, method: Method, body?: Request, accessToken?: string, urlParams?: Map<string, string>) {
         let url = generateUrl(this.baseURL, path, urlParams)
         console.log(url)
         const response = await this.fetch(url, {
