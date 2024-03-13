@@ -29,7 +29,7 @@ export interface UserOp {
 }
 
 export interface TryPayUserOpRequest {
-    user_operation: UserOp
+    map: UserOp
     extra?: string
     force_entrypoint_address?: string
     force_network?: Network
