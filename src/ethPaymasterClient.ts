@@ -2,10 +2,10 @@ import {
     AuthResponse,
     BaseRequest,
     BaseResponse,
-    ENV,
+    ENV, GetSupportEntryEntryPointResponse, GetSupportStrategyResponse,
     HealthResponse,
-    Method,
-    TryPayUserOpRequest,
+    Method, Network,
+    TryPayUserOpRequestV1,
     TryPayUserOpResponse
 } from "./common/type";
 import {generateUrl} from "./common/PaymasterUtil";
@@ -43,26 +43,42 @@ export class EthPaymasterClient {
     }
 
     async health(): Promise<HealthResponse> {
-        return this.request(Path.Health, Method.GET)
+        return this.getRequest(Path.Health)
     }
 
     async auth(apikey: string): Promise<AuthResponse> {
         return this.request(Path.Auth, Method.POST, {apiKey: apikey})
     }
 
-    tryPayUserOperationV1(accessToken: string, request: TryPayUserOpRequest): Promise<TryPayUserOpResponse> {
+    tryPayUserOperationV1(accessToken: string, request: TryPayUserOpRequestV1): Promise<TryPayUserOpResponse> {
         return this.request(Path.TryPayUserOperationV1, Method.POST, request, accessToken)
     }
 
 
-    getSupportEntryPointV1(): Promise<BaseResponse> {
-        return this.request(Path.GetSupportEntryPointV1, Method.GET)
+    getSupportEntryPointV1(network: Network, accessToken: string): Promise<GetSupportEntryEntryPointResponse> {
+        return this.getRequest(Path.GetSupportEntryPointV1, accessToken, new Map([["network", network.toString()]]))
     }
 
-    getSupportStrategyV1(): Promise<BaseResponse> {
-        return this.request(Path.GetSupportStrategyV1, Method.GET)
+    getSupportStrategyV1(network: Network, accessToken: string): Promise<GetSupportStrategyResponse> {
+        return this.getRequest(Path.GetSupportStrategyV1,accessToken, new Map([["network", network.toString()]]))
     }
 
+    protected async getRequest<Request extends BaseRequest, Response>(path: Path, accessToken?: string, urlParams?: Map<string, string>) {
+        let url = generateUrl(this.baseURL, path, urlParams)
+        console.log(url)
+        const response = await this.fetch(url, {
+            method: Method.GET,
+            headers: {
+                "accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        })
+        if (!response.ok) {
+            throw await PaymasterError.from(response)
+        }
+        return await response.json() as Promise<Response>
+    }
 
     protected async request<Request extends BaseRequest, Response>(path: Path, method: Method, body?: Request, accessToken?: string, urlParams?: Map<string, string>) {
         let url = generateUrl(this.baseURL, path, urlParams)

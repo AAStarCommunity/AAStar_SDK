@@ -22,14 +22,16 @@ export interface UserOp {
     max_fee_per_gas: string
     max_priority_fee_per_gas: string
     nonce: string
-    per_verification_gas: string
+    pre_verification_gas: string
     sender: string
     signature: string
-    verification_gas_list: string
+    verification_gas_limit: string
+    paymaster_and_data: string
 }
 
-export interface TryPayUserOpRequest {
-    map: UserOp
+//entrypoint v0.6
+export interface TryPayUserOpRequestV1 {
+    user_operation: UserOp
     extra?: string
     force_entrypoint_address?: string
     force_network?: Network
@@ -60,6 +62,22 @@ export interface TryPayUserOpResult {
 
 export interface HealthResponse extends BaseResponse {
     data: Map<string, string>
+}
+
+export interface EntryPoint {
+    address: string
+    desc: string
+    network: string
+    strategy_id: string
+}
+
+
+export interface GetSupportEntryEntryPointResponse extends BaseResponse {
+    data: EntryPoint[]
+}
+
+export interface GetSupportStrategyResponse extends BaseResponse {
+    data: Map<string, any>
 }
 
 export interface AuthResponse {
