@@ -1,5 +1,5 @@
 {
-  "name": "ethpaymaster_sdk_ts",
+  "name": "@aastar/ethpaymaster_sdk_ts",
   "version": "1.0.0",
   "description": "EthPaymaster typescript Sdk",
   "main": "index.js",
