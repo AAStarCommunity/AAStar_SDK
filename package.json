@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "bump": "node ./scripts/bump.js",
     "release": "node ./scripts/release.js"
   },
   "keywords": [],
