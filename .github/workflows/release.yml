@@ -3,7 +3,7 @@ name: Publish to npm
 on:
   push:
     branches:
-      - main
+      - chao/auto-npm-publish
 jobs:
   publish:
     runs-on: ubuntu-latest
