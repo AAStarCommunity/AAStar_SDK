@@ -24,9 +24,9 @@ jobs:
         id: version
         run: |
           npm version patch --no-git-tag-version
-          echo "::set-output name=new_version::$(node -p "require('./package.json').version")"
+          echo "new_version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: Publish to npm
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  # 设置 npm token
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}  # 设置 npm token
         run: npm publish --access public
