@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - chao/auto-npm-publish
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
