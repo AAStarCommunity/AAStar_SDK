@@ -1,3 +1,3 @@
-import { EthPaymasterClient } from './src/ethPaymasterClient';
+import { EthPaymasterClient } from './cjs/ethPaymasterClient';
 
 export default EthPaymasterClient;
