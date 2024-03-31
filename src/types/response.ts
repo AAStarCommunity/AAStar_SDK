@@ -90,6 +90,19 @@ export interface TryPayUserOpRes extends BaseRes {
 }
 
 
-export interface UserOp {
-  sender: string;
+export interface UserOpReq {
+  forceStrategyId: string;
+  userOperation: {
+    callData: string;
+    callGasLimit: string;
+    initCode: string;
+    maxFeePerGas: string;
+    maxPriorityFeePerGas: string;
+    nonce: string;
+    preVerificationGas: string;
+    sender: string;
+    signature: string;
+    verificationGasLimit: string;
+    paymasterAndData: string;
+  }
 }
