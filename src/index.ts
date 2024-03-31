@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { HealthRes, AuthRes, EntryPointRes, StrategyRes, UserOpReq, TryPayUserOpRes } from '@/types/response'
 import Path from "@utils/path";
-import { padHex } from 'viem';
 
 /**
  * Change the base url to the production or development url
@@ -36,9 +35,10 @@ export const health = (): Promise<HealthRes | any> => {
  */
 export const auth = (apiKey: string): Promise<AuthRes | any> => {
   return axios.post(Path.Auth, { apiKey: apiKey }).then(res => {
-    if (res?.data?.token && res?.data?.expire) {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.data?.token;
+    if (res && res?.token && res?.expire) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.token;
     }
+    return res;
   });
 }
 
