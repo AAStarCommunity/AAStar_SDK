@@ -35,7 +35,9 @@ export const health = (): Promise<HealthRes | any> => {
  */
 export const auth = (apiKey: string): Promise<AuthRes | any> => {
   return axios.post(Path.Auth, { apiKey: apiKey }).then(res => {
+    //@ts-ignore
     if (res && res?.token && res?.expire) {
+      //@ts-ignore
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.token;
     }
     return res;
