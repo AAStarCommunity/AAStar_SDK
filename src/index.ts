@@ -9,15 +9,15 @@ import Path from "@utils/path";
  */
 export function init(isProdUrl = true) {
   axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://relay-ethpaymaster-pr-20.onrender.com";
-  axios.interceptors.response.use(function (response) {
-    // return data value
-    if (response?.data?.token && response?.data?.expire) {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + response?.data?.token;
-    }
-    return response?.data || response;
-  }, function (error) {
-    return Promise.reject(error);
-  });
+  // axios.interceptors.response.use(function (response) {
+  //   // return data value
+  //   if (response?.data?.token && response?.data?.expire) {
+  //     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response?.data?.token;
+  //   }
+  //   return response?.data || response;
+  // }, function (error) {
+  //   return Promise.reject(error);
+  // });
 }
 
 /**
@@ -34,7 +34,12 @@ export const health = (): Promise<HealthRes | any> => {
  * @returns 
  */
 export const auth = (apiKey: string): Promise<AuthRes | any> => {
-  return axios.post(Path.Auth, { data: { apiKey: apiKey } });
+  return axios.post(Path.Auth, { data: { apiKey: apiKey } }).then(res => {
+    if (res?.data?.token && res?.data?.expire) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.data?.token;
+    }
+    return res?.data || res;
+  });
 }
 
 
