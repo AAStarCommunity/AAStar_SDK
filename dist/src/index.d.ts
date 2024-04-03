@@ -1,4 +1,4 @@
-import { HealthRes, AuthRes, EntryPointRes, StrategyRes, UserOpReq, TryPayUserOpRes } from '@/types/response';
+import { HealthRes, AuthRes, EntryPointRes, StrategyRes, UserOpReq, TryPayUserOpRes } from './types/response';
 /**
  * Change the base url to the production or development url
  *

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { HealthRes, AuthRes, EntryPointRes, StrategyRes, UserOpReq, TryPayUserOpRes } from '@/types/response'
-import Path from "@utils/path";
+import { HealthRes, AuthRes, EntryPointRes, StrategyRes, UserOpReq, TryPayUserOpRes } from './types/response'
+import Path from "./utils/path";
 
 /**
  * Change the base url to the production or development url
@@ -9,6 +9,7 @@ import Path from "@utils/path";
  */
 export function init(isProdUrl = true) {
   axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://relay-ethpaymaster-pr-20.onrender.com";
+  axios.defaults.headers.common['Content-Type'] = 'application/json';
   axios.interceptors.response.use(function (response) {
     // return data value
     // if (response?.data?.token && response?.data?.expire) {
@@ -16,7 +17,7 @@ export function init(isProdUrl = true) {
     // }
     return response?.data || response;
   }, function (error) {
-    return Promise.reject(error);
+    return Promise.reject(error.toJSON());
   });
 }
 
