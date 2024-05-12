@@ -8,7 +8,8 @@ import Path from "./utils/path";
  * @param isProdUrl is production url
  */
 export function init(isProdUrl = true) {
-  axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://relay-ethpaymaster-pr-20.onrender.com";
+  // axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://relay-ethpaymaster-pr-20.onrender.com";
+  axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "http://localhost";
   axios.defaults.headers.common['Content-Type'] = 'application/json';
   axios.interceptors.response.use(function (response) {
     // return data value
@@ -67,5 +68,66 @@ export const tryPayUserOperationV1 = (data: UserOpReq): Promise<TryPayUserOpRes 
       verification_gas_limit: data.userOperation.verificationGasLimit,
       paymaster_and_data: data.userOperation.paymasterAndData
     }
+  })
+}
+
+let axiosIndex = 1;
+export const getSupportEntryPoint = (network = "Network"): Promise<EntryPointRes | any> => {
+  return axios.post('/api/v1/paymaster', {
+    "jsonrpc": "2.0",
+    "id": axiosIndex++,
+    "method": "pm_supportEntrypoint",
+    "params": [
+      network
+    ]
+  }).then(res => {
+    // @ts-ignore
+    if (res?.code === 200 && res?.data?.length) {
+      return res.data;
+    }
+    return res;
+  })
+}
+
+export const sponsorUserOp = (userOp: { callData: string, initCode: string, nonce: string, sender: string, strategyCode: string }): Promise<any> => {
+  return axios.post('/api/v1/paymaster', {
+    "jsonrpc": "2.0",
+    "id": axiosIndex++,
+    "method": "pm_sponsorUserOperation",
+    "params": [
+      {
+        callData: userOp.callData,
+        initCode: userOp.initCode,
+        nonce: userOp.nonce,
+        sender: userOp.sender
+      }, {
+        strategy_code: userOp.strategyCode
+      }]
+  })
+}
+
+export const estimateUserOpGas = (userOp: { callData: string, initCode: string, nonce: string, sender: string, strategyCode: string }): Promise<any> => {
+  return axios.post('/api/v1/paymaster', {
+    "jsonrpc": "2.0",
+    "id": axiosIndex++,
+    "method": "pm_estimateUserOperationGas",
+    "params": [
+      {
+        callData: userOp.callData,
+        initCode: userOp.initCode,
+        nonce: userOp.nonce,
+        sender: userOp.sender
+      }, {
+        strategy_code: userOp.strategyCode
+      }]
+  })
+}
+
+export const getAccount = (network = 'ethereum'): Promise<| any> => {
+  return axios.post('/api/v1/paymaster', {
+    "jsonrpc": "2.0",
+    "id": axiosIndex++,
+    "method": "pm_paymasterAccount",
+    "params": [network]
   })
 }
