@@ -8,8 +8,8 @@ import Path from "./utils/path";
  * @param isProdUrl is production url
  */
 export function init(isProdUrl = true) {
-  // axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://relay-ethpaymaster-pr-20.onrender.com";
-  axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "http://localhost";
+  axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://ethpaymaster-backservice-weun.onrender.com";
+  // axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "http://localhost";
   axios.defaults.headers.common['Content-Type'] = 'application/json';
   axios.interceptors.response.use(function (response) {
     // return data value
@@ -72,7 +72,7 @@ export const tryPayUserOperationV1 = (data: UserOpReq): Promise<TryPayUserOpRes 
 }
 
 let axiosIndex = 1;
-export const getSupportEntryPoint = (network = "Network"): Promise<EntryPointRes | any> => {
+export const getSupportEntryPoint = (network = "ethereum-sepolia"): Promise<EntryPointRes | any> => {
   return axios.post('/api/v1/paymaster', {
     "jsonrpc": "2.0",
     "id": axiosIndex++,
@@ -123,11 +123,17 @@ export const estimateUserOpGas = (userOp: { callData: string, initCode: string, 
   })
 }
 
-export const getAccount = (network = 'ethereum'): Promise<| any> => {
+export const getAccount = (network = 'ethereum-sepolia'): Promise<`0x${string}`[] | any> => {
   return axios.post('/api/v1/paymaster', {
     "jsonrpc": "2.0",
     "id": axiosIndex++,
     "method": "pm_paymasterAccount",
     "params": [network]
+  }).then(res => {
+    // @ts-ignore
+    if (res?.code === 200 && res?.data?.length) {
+      return res.data;
+    }
+    return res;
   })
 }
