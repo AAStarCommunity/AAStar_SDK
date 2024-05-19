@@ -1,0 +1,23 @@
+{
+  "name": "aa_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aastar/ethpaymaster_sdk_ts": "1.0.16",
+    "permissionless": "0.1.19",
+    "viem": "^2.10.5"
+  },
+  "devDependencies": {
+    "tslib": "^2.6.2",
+    "tsx": "^4.10.1",
+    "typescript": "^5.4.5"
+  }
+}
