@@ -10,13 +10,13 @@ import Path from "./utils/path";
 export function init(isProdUrl = true) {
   axios.defaults.baseURL = isProdUrl ? "https://EthPaymaster.org" : "https://relay-ethpaymaster-pr-20.onrender.com";
   axios.defaults.headers.common['Content-Type'] = 'application/json';
-  axios.interceptors.response.use(function (response) {
+  axios.interceptors.response.use(function (response: any) {
     // return data value
     // if (response?.data?.token && response?.data?.expire) {
     //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response?.data?.token;
     // }
     return response?.data || response;
-  }, function (error) {
+  }, function (error: any) {
     return Promise.reject(error.toJSON());
   });
 }
