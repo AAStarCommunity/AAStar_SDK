@@ -1,4 +1,89 @@
-# EthPaymaster_sdk_ts
+# AAStar SDK
+For normal use of AAStar, you should install this SDK.
+
+## constants.ts
+Provided normal settings for account and gas and ens and pnts and more operations.
+You can change some settings in your code to overide it.
+
+## relay.ts
+basic relay service flow maintainner, include bundler, paymaster, ens resolver.
+
+## account.ts
+finish the transaction flow with contract account and EOA.
+
+## utils.ts
+general purpose utils.
+
+## Demo script
+1. install aastar/sdk, viem
+2. create from this：https://github.com/wevm/viem/tree/main/examples/_template and https://viem.sh/account-abstraction
+3. check constants and config your env with a copy of env.example
+
+**To be tested**(under construction🚧), a basic ERC 4337 transaction:
+```javascript
+import { createPublicClient, http } from 'viem'
+import { createBundlerClient } from 'viem/account-abstraction'
+import { mainnet } from 'viem/chains'
+import { privateKeyToAccount } from 'viem/accounts'
+ 
+const client = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+})
+ 
+const bundlerClient = createBundlerClient({ 
+  client, 
+  transport: http(BUNDLER_RPC_URL), 
+}) 
+ 
+const owner = privateKeyToAccount('0x...') 
+const account = await toAAAtarSmartAccount({ //depend on your SDK improted method
+  client, 
+  owners: [owner] 
+})
+
+const hash = await bundlerClient.sendUserOperation({ 
+  account, 
+  calls: [{ 
+    to: '0xaaaaaa', 
+    value: parseEther('0.001') 
+  }] 
+}) 
+ 
+const receipt = await bundlerClient.waitForUserOperationReceipt({ hash }) 
+
+```
+
+Here is a tx with gas sponsorship:
+```
+import { http } from 'viem'
+import { 
+  createBundlerClient, 
+  createPaymasterClient,
+} from 'viem/account-abstraction'
+import { account, client } from './config.ts'
+ 
+const paymasterClient = createPaymasterClient({ 
+  transport: http(PAYMASTER_RPC_URL), 
+}) 
+ 
+const bundlerClient = createBundlerClient({
+  account,
+  client,
+  paymaster: paymasterClient, 
+  transport: http(BUNDLER_RPC_URL),
+})
+ 
+const hash = await bundlerClient.sendUserOperation({
+  calls: [{
+    to: '0xaaaaaaa',
+    value: parseEther('0.001')
+  }]
+})
+
+```
+
+# EthPaymaster_sdk_ts （Deprecated）
 EthPaymaster typescript Sdk
 
 ```tsx
