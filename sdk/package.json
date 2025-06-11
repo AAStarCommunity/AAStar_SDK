@@ -1,0 +1,25 @@
+{
+  "name": "@aasstar/sdk",
+  "version": "0.1.2",
+  "description": "AAStar SDK",
+  "dependencies": {
+    "viem": "^2.19.1"
+  },
+  "main": "index.js",
+  "module": "index.mjs", 
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "keywords": ["sdk", "node", "aasstar"],
+  "author": "AAStar Team",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AAStarCommunity/AAStar_SDK.git"
+  }
+}

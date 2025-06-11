@@ -1,0 +1,11 @@
+{
+  "name": "create-aasstar-app",
+  "version": "1.0.0",
+  "bin": {
+    "create-xxx-app": "./bin/index.js"
+  },
+  "dependencies": {
+    "@aasstar/my-package": "^1.0.0"
+  },
+  "files": ["bin", "templates"]
+}

@@ -1,6 +1,23 @@
 # AAStar SDK
 For normal use of AAStar, you should install this SDK.
 
+## Follow me
+We first try three small demos. 
+1. Normal contract account transaction
+The first one is to use Viewm and its account abstraction example to show you how to use an public SDK and to complete the contract account transaction demo. 
+2. Account with your logic programming
+The second one is that we create our own account with customized logic.
+3. Gas Sponsorship
+The third one is that we need to support the ERC-20 gas token to pay gas.
+
+### Install
+1. install aastar/sdk, viem
+  ```
+  pnpm install aastar/sdk viem
+  ```
+2. create from this：https://github.com/wevm/viem/tree/main/examples/_template and https://viem.sh/account-abstraction
+3. check constants and config your env with a copy of env.example
+
 ## constants.ts
 Provided normal settings for account and gas and ens and pnts and more operations.
 You can change some settings in your code to overide it.
@@ -15,9 +32,7 @@ finish the transaction flow with contract account and EOA.
 general purpose utils.
 
 ## Demo script
-1. install aastar/sdk, viem
-2. create from this：https://github.com/wevm/viem/tree/main/examples/_template and https://viem.sh/account-abstraction
-3. check constants and config your env with a copy of env.example
+
 
 **To be tested**(under construction🚧), a basic ERC 4337 transaction:
 ```javascript
