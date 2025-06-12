@@ -1,12 +1,27 @@
 # AAStar
-It is a components collection, all projects, SDK or npm packages in AAStar infrastructure.
 It is a demo show **for developers** to build their own applications.
 If you are a **end-user**, check our website: [https://aastar.io](https://aastar.io) for more user demos.
 
+## Components introduction in a word
+
+1. AirAccount 
+Control your crypto assets only by you. 🤑
+1. SuperPaymaster 
+Pay gas seamlessly by your retweet. 📡
+1. CometENS 
+Naming your crypto address meaningful. 🎖️
+1. OpenPNTS 
+Issue your own PNTs. 🪙
+1. OpenCards 
+Issue your own cards. 💳
+1. Arcadia 
+Issue community chain games and play. 🎲
+1. COS72 
+Manage your group or community. 🍄
+
 ## AAStar npm packages collection
 
-
-You can use 
+### install 
 ```
 pnpm install @aastar/airaccount
 @aastar/superpaymaster
@@ -22,6 +37,19 @@ pnpm install @aastar/sdk
 or 
 ```
 pnpm install aastar
+```
+
+for create-cos72-app
+```
+pnpm install -g create-cos72-app
+create-cos72-app my-app
+brew tap aastar/cos72
+brew install cos72
+
+brew upgrade cos72
+
+brew uninstall --cask cos72
+brew untap aastar/cos72
 ```
 
 ## For developers
