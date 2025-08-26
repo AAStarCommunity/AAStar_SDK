@@ -1,0 +1,141 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Core SDK Architecture",
+        "description": "Create the foundational TypeScript project structure for the AAStar SDK with proper module exports and build configuration",
+        "details": "Update the existing src/index.ts to export the main SDK components. Create separate directories for core classes: src/account/, src/client/, src/signer/. Configure TypeScript compilation targets for both CommonJS and ESM. Update package.json exports to support tree-shaking and proper module resolution. Set up proper type definitions export structure.",
+        "testStrategy": "Unit tests for module imports and exports. Verify TypeScript compilation succeeds for both target formats. Test package import in Node.js and browser environments.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Implement AirAccount Core Class",
+        "description": "Create the AirAccount class that represents ERC-4337 smart accounts with account creation, nonce management, and signing capabilities",
+        "details": "Create src/account/AirAccount.ts implementing: create() method using eth-infinitism simple-account factory pattern, getNonce() method integrating with EntryPoint contract, signUserOperation() method using viem for EIP-191 message signing. Use viem for all blockchain interactions. Implement proper error handling and input validation. Follow ERC-4337 UserOperation structure from existing types/response.ts.",
+        "testStrategy": "Unit tests for account creation with deterministic addresses. Test nonce retrieval from various network states. Test user operation signing with known private keys and verify signatures match expected format.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Implement Signer Utility Class",
+        "description": "Create the Signer utility class for managing different types of signers including local private key signers",
+        "details": "Create src/signer/Signer.ts with createLocalSigner() method that accepts private key hex string and returns viem LocalAccount. Implement proper key validation and error handling. Support both 0x-prefixed and non-prefixed hex strings. Add methods for signature verification and public key derivation. Prepare extensible structure for future passkey signer support.",
+        "testStrategy": "Test local signer creation with various private key formats. Verify generated signatures against known test vectors. Test error handling for invalid private keys.",
+        "priority": "medium",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement Basic AAStarClient",
+        "description": "Create the main AAStarClient class with RPC provider integration and basic user operation sending capabilities",
+        "details": "Create src/client/AAStarClient.ts with constructor accepting RPC URL configuration. Implement createAccount() method that instantiates AirAccount with provided signer. Implement sendUserOperation() method that constructs, signs, and submits user operations to bundler via RPC. Integrate with viem's publicClient for blockchain interactions. Add proper gas estimation and fee calculation logic.",
+        "testStrategy": "Integration tests with testnet RPC endpoints. Test account creation and user operation submission. Mock RPC responses for unit testing. Verify proper error handling for network failures.",
+        "priority": "high",
+        "dependencies": [
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Integrate SuperRelay Paymaster Client",
+        "description": "Create SuperRelayClient to handle communication with SuperRelay for gas sponsorship and integrate it into AAStarClient",
+        "details": "Create src/client/SuperRelayClient.ts that wraps existing paymaster API functions (auth, getSupportStrategyV1, tryPayUserOperationV1) from current index.ts. Refactor existing axios-based implementation into a proper class. Add error handling, retry logic, and proper TypeScript interfaces. Update AAStarClient to include sponsorUserOperation() method that calls SuperRelay to get paymasterAndData.",
+        "testStrategy": "Integration tests with SuperRelay testnet endpoints. Test authentication flow and strategy retrieval. Mock SuperRelay API responses for unit testing. Verify paymaster signature validation.",
+        "priority": "high",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Enhance User Operation Flow",
+        "description": "Update AAStarClient to support both regular and sponsored user operations with automatic paymaster detection",
+        "details": "Enhance sendUserOperation() method in AAStarClient to detect when gas sponsorship is available and automatically include paymasterAndData. Implement smart gas estimation that accounts for paymaster gas overhead. Add configuration options for forcing sponsored vs non-sponsored transactions. Implement proper UserOperation validation before submission.",
+        "testStrategy": "Test both sponsored and non-sponsored transaction flows. Verify gas estimation accuracy for paymaster transactions. Test automatic fallback from sponsored to regular transactions when sponsorship fails.",
+        "priority": "high",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Implement Comprehensive Error Handling",
+        "description": "Add robust error handling throughout the SDK with custom error types and informative error messages",
+        "details": "Create src/types/errors.ts with custom error classes for different failure scenarios (NetworkError, SigningError, PaymasterError, ValidationError). Update all classes to throw appropriate errors with actionable messages. Add error recovery mechanisms where possible. Implement proper error serialization for debugging.",
+        "testStrategy": "Unit tests for each error type and recovery mechanism. Integration tests that simulate various failure scenarios. Verify error messages provide clear guidance for developers.",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Add Transaction Batching Support",
+        "description": "Extend AirAccount to support batch transactions within a single user operation",
+        "details": "Add batchTransactions() method to AirAccount that accepts array of transaction objects and encodes them into a single callData using multicall pattern. Support both simple transfers and contract interactions. Implement proper gas estimation for batch operations. Add validation to prevent conflicting operations in the same batch.",
+        "testStrategy": "Test batching multiple transfers to different recipients. Test batch contract interactions. Verify gas estimation accuracy for complex batch operations. Test batch size limits and optimization.",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Add Social Recovery Foundation",
+        "description": "Implement basic social recovery mechanism with guardian management for AirAccount",
+        "details": "Create src/recovery/SocialRecovery.ts with guardian management functionality. Implement addGuardian(), removeGuardian(), and initiateRecovery() methods. Design recovery threshold logic and timelock mechanisms. Prepare smart contract integration points for future contract deployment. Focus on the SDK interface rather than full contract implementation.",
+        "testStrategy": "Unit tests for guardian management operations. Test recovery threshold calculations. Mock smart contract interactions for recovery flow testing. Verify proper access control and validation.",
+        "priority": "low",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Create Integration Tests and Examples",
+        "description": "Develop comprehensive integration tests and usage examples demonstrating the SDK's core features",
+        "details": "Create integration tests in __test__/integration/ that test complete workflows: account creation, regular transactions, sponsored transactions, and batch operations. Add example applications in examples/ directory showing common use cases. Set up CI/CD pipeline to run tests against testnet. Create performance benchmarks for key operations.",
+        "testStrategy": "End-to-end tests covering all major user stories from PRD. Performance tests measuring transaction throughput and latency. Compatibility tests across different Node.js versions and TypeScript configurations.",
+        "priority": "medium",
+        "dependencies": [
+          8,
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-08-26T10:54:28.792Z",
+      "updated": "2025-08-26T11:02:12.446Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
