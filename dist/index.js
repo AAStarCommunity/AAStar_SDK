@@ -16,8 +16,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.hello = hello;
 __exportStar(require("./AirAccount"), exports);
-__exportStar(require("./AirAccountClient"), exports);
-__exportStar(require("./AirAccountSigner"), exports);
+__exportStar(require("./client/AAStarClient"), exports);
+__exportStar(require("./signer/Signer"), exports);
+__exportStar(require("./test-utils/TestAccountManager"), exports);
+__exportStar(require("./handlers/TransactionTypeHandler"), exports);
 function hello() {
     return 'Hello, World!';
 }
